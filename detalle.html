@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emuná - Ropa Deportiva</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;0,800;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+<link rel="icon" href="./img/icono2.png">
+
+    <style>
+        .product-detail-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        .detail-image-section { display: flex; flex-direction: column; gap: 15px; }
+        .main-img-container { 
+            background: #1a1a1a; 
+            border-radius: 20px; 
+            padding: 20px; 
+            border: 1px solid #333;
+            display: flex;
+            justify-content: center;
+        }
+        .main-img-container img { max-width: 100%; border-radius: 10px; }
+        .thumbnail-grid { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
+        .thumb { 
+            width: 80px; height: 80px; object-fit: cover; 
+            border-radius: 10px; cursor: pointer; border: 2px solid transparent; opacity: 0.6;
+        }
+        .thumb.active { border-color:#e7d674; opacity: 1;}
+        .detail-info h1 { font-size: 2.2rem; color: #e7d674; margin-bottom: 10px; }
+        .detail-price { font-size: 2.5rem; color: white; font-weight: 800; margin-bottom: 15px; display: block; }
+        .shipping-info { color: #25D366; font-weight: 600; margin-bottom: 25px; }
+        .detail-desc { color: #ccc; line-height: 1.8; margin-bottom: 30px; font-size: 1.1rem; }
+        .detail-desc ul { list-style: none; padding: 0; }
+        .btn-buy-wa {
+            background-color: #25D366; color: white; padding: 18px 35px;
+            text-decoration: none; border-radius: 12px; font-weight: bold;
+            display: inline-flex; align-items: center; gap: 12px; font-size: 1.2rem;
+        }
+        @media (max-width: 850px) { .product-detail-container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <div style="padding: 20px 40px;">
+        <a href="index.html" style="color: #e7d674; text-decoration: none; font-weight: 600;">&larr; Volver al Catálogo</a>
+    </div>
+
+    <div id="product-content" class="product-detail-container">
+        </div>
+
+    <script>
+        // BASE DE DATOS DE PRODUCTOS
+        const productos = {
+            "Monos": {
+                titulo: "Monos",
+                precio: "35$",
+                entrega: "🚚 Entregas personales sin costo adicional",
+                descripcion: `
+                    <strong>Caracteristicas:</strong><br><br> 
+                    <ul>
+                        <li>• <strong>Corte ergonomico</li>
+                        <li>• Costuras Planas</li>
+                        <li>• Variedad en Colores</li>
+                        <li>• Variedad en Tallas</li>
+                    </ul>
+                `,
+                imagenes: ["./img/Monos.png",
+                "./img/Monos1.png",
+            ],
+                wa_msg: "Hola Emuna, estoy interesado en Monos"
+            },
+            "Sueters": {
+                titulo: "Sueters",
+                precio: "55$", // Puedes poner un precio fijo si prefieres
+                entrega: "🚚 Entregas personales sin costo adicional",
+                descripcion: `
+                    <strong>Caracteristicas:</strong><br><br>
+                    <ul>
+                        <li>• <strong>Modelos Exclusivos:</strong> Calidad en Tela</li>
+                        <li>• <strong>Protección Total:</strong> Capucha Ergonomica</li>
+                        <li>• <strong>Calidad Premium:</strong> Excelente tacto y ajuste perfecto</li>
+                    </ul>
+                `,
+                imagenes: [
+                    "./img/Chaquetas.png", 
+                    "./img/Chaquetas1.png", 
+             ],
+                   wa_msg: "Hola Emuna, me gustaron los Sueters. ¿Qué modelos tienen disponibles?"
+           
+                 }, 
+            
+            "Franelas Deportivas": {
+            titulo: "Franelas Deportivas",
+            precio: "24$", // Ajusta el precio si lo tienes
+            entrega: "🚚 Entregas personales sin costo adicional",
+            descripcion: `
+                <strong>Caracteristicas:</strong><br><br>
+                    <li>• <strong>Comodidad Total</strong></li>
+                    <li>• <strong>Transpirables</strong></li>
+                    <li>• <strong>Distintos Colores</strong></li>
+                </ul>
+            `,
+            imagenes: ["./img/Franela6.png",
+                "./img/Franela7.png",
+                "./img/Franela8.png",
+                "./img/Franela9.png",
+                "./img/Franela10.png",
+                "./img/Franela11.png",
+                "./img/Franela12.png",
+            ],
+            wa_msg: "Hola Emuna! Me interesa los Franelas Deportivas. ¿Podrían darme más información sobre los modelos disponibles?"
+        },
+
+        "Shorts": {
+            titulo: "Shorts",
+            precio: "22$",
+            entrega: "🚚 Entregas personales sin costo adicional",
+            descripcion: `
+                <strong>Caracteristicas:</strong><br><br>
+                    <li>• <strong>Interior Comodo</strong>
+                    <li>• <strong>Acabado termico</strong> </li>
+                    <li>• <strong>Variedad Colores</strong></li>
+                </ul>
+            `,
+            imagenes: ["./img/Shorts1.png",
+                     "./img/Shorts2.png",
+                "./img/Shorts3.png"
+            ],
+            wa_msg: "Hola Emuna! ¿Tienen Shorts disponibles? "
+        }, 
+
+        "Conjuntos": {
+            titulo: "Conjuntos",
+            precio: "80$",
+            entrega: "🚚 Entregas personales sin costo adicional a partir de 80$",
+            descripcion: `
+                <strong>Disponibes:</strong><br><br>
+                    <li>• <strong>Calidad:</strong> Variedad en modelos y colores disponibles, excelente calidad </li>
+                    <li>• <strong>Incluso:</strong> Se venden por separado </li>
+                    <li>• <strong>Detalles:</strong> Capucha retirable </li>
+                </ul>
+            `,
+            imagenes: [
+                "./img/Conjuntos1.png", // Imagen del cargador o su caja
+                "./img/Conjuntos2.png", 
+                "./img/Conjuntos3.png",  // Imagen del puerto o detalles
+            ],
+            wa_msg: "Hola Emuna! Me interesan los Conjuntos ¿Tienen disponibilidad?"
+        },
+
+        "Franelas_Tela": {
+            titulo: "Franelas Tela",
+            precio: " 19$",
+            entrega: "🚚 Entregas personales sin costo adicional a partir de 40$",
+            descripcion: `
+                <strong>Caracteristicas:</strong><br><br>
+                    <li>• <strong>Calidad:</strong> Variedad en modelos y excelente calidad </li>
+                    <li>• <strong>Incluso:</strong> Suavidad en Telas </li>
+                    <li>• <strong>Detalles:</strong> Variedad en colores </li>
+                </ul>
+            `,
+            imagenes: [
+             "./img/Franela1.png",
+             "./img/Franela2.png", 
+             "./img/Franela3.png",
+             "./img/Franela4.png",
+             "./img/Franela5.png",  // Imagen del puerto o detalles
+                ],
+            wa_msg: "Hola Emuna! Me interesan las Franelas de Tela, ¿Tienen disponibilidad?"
+        }    
+        }
+    
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const pid = urlParams.get('p');
+        const p = productos[pid];
+        const container = document.getElementById('product-content');
+
+        if (p) {
+            container.innerHTML = `
+                <div class="detail-image-section">
+                    <div class="main-img-container">
+                        <img id="main-view" src="${p.imagenes[0]}" alt="${p.titulo}">
+                    </div>
+                    <div class="thumbnail-grid">
+                        ${p.imagenes.map((img, i) => `
+                            <img src="${img}" class="thumb ${i===0?'active':''}" onclick="changeImg(this, '${img}')">
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="detail-info">
+                    <h1>${p.titulo}</h1>
+                    <span class="detail-price">${p.precio}</span>
+                    <p class="shipping-info">${p.entrega}</p>
+                    <div class="detail-desc">${p.descripcion}</div>
+                    <a href="https://wa.me/584221656482?text=${encodeURIComponent(p.wa_msg)}" class="btn-buy-wa" target="_blank">
+                        Comprar por WhatsApp
+                    </a>
+                </div>
+            `;
+        } else {
+            container.innerHTML = "<h1>Producto no encontrado</h1>";
+        }
+
+        function changeImg(el, src) {
+            document.getElementById('main-view').src = src;
+            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+        }
+    </script>
+</body>
+</html>
